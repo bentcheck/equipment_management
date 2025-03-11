@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="it_equipment_management.StateIconField">
+        <span>
+            <i t-att-class="getIconClass()" t-att-title="getTitle()"></i>
+        </span>
+    </t>
+</templates>

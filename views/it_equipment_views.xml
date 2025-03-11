@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_it_equipment_tree" model="ir.ui.view">
+        <field name="name">it.equipment.tree</field>
+        <field name="model">it.equipment</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="acquisition_price"/>
+                <field name="supplier"/>
+                <field name="state" widget="state_field"/>
+                <field name="assigned_person"/>
+                <field name="assigned_from"/>
+                <field name="assigned_to"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_it_equipment_form" model="ir.ui.view">
+        <field name="name">it.equipment.form</field>
+        <field name="model">it.equipment</field>
+        <field name="arch" type="xml">
+            <form string="IT Equipment">
+                <header>
+                    <button name="print_report" type="object" string="Print Handoff Document" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="acquisition_price"/>
+                        <field name="supplier"/>
+                        <field name="state"/>
+                    </group>
+                    <group>
+                        <field name="assigned_person" readonly="state != 'assigned'"/>
+                        <field name="assigned_from" readonly="state != 'assigned'"/>
+                        <field name="assigned_to" readonly="state != 'assigned'"/>
+                    </group>
+                    <notebook>
+                        <page string="Assignment History">
+                            <field name="assignment_event_ids" mode="tree,form"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_assignment_event_tree" model="ir.ui.view">
+        <field name="name">assignment.event.tree</field>
+        <field name="model">assignment.event</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="equipment_id"/>
+                <field name="assigner_id"/>
+                <field name="assigned_person"/>
+                <field name="assigned_from"/>
+                <field name="assigned_to"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_assignment_event_form" model="ir.ui.view">
+        <field name="name">assignment.event.form</field>
+        <field name="model">assignment.event</field>
+        <field name="arch" type="xml">
+            <form string="Assignment Event">
+                <sheet>
+                    <group>
+                        <field name="equipment_id"/>
+                        <field name="assigner_id"/>
+                        <field name="assigned_person"/>
+                        <field name="assigned_from"/>
+                        <field name="assigned_to"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_it_equipment_root" name="IT Equipment Management" sequence="10"/>
+    <menuitem id="menu_it_equipment" name="Equipments" parent="menu_it_equipment_root" sequence="10"/>
+
+    <record id="action_it_equipment" model="ir.actions.act_window">
+        <field name="name">IT Equipment</field>
+        <field name="res_model">it.equipment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new IT Equipment record.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_it_equipment_action" name="Manage Equipments"
+              parent="menu_it_equipment" action="action_it_equipment" sequence="10"/>
+
+    <menuitem id="menu_assignment_event_root" name="Assignment Events" parent="menu_it_equipment_root" sequence="20"/>
+    <record id="action_assignment_event" model="ir.actions.act_window">
+        <field name="name">Assignment Events</field>
+        <field name="res_model">assignment.event</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_assignment_event" name="Assignment Logs" parent="menu_assignment_event_root" action="action_assignment_event" sequence="10"/>
+</odoo>
