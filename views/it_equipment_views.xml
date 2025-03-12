@@ -21,9 +21,6 @@
         <field name="model">it.equipment</field>
         <field name="arch" type="xml">
             <form string="IT Equipment">
-                <header>
-                    <button name="print_report" type="object" string="Print Handoff Document" class="btn-primary"/>
-                </header>
                 <sheet>
                     <group>
                         <field name="name"/>

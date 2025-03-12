@@ -5,44 +5,22 @@ class ITEquipment(models.Model):
     _name = 'it.equipment'
     _description = 'IT Equipment'
 
-    name = fields.Char(
-        string='Serial Number',
-        required=True
-    )
-    acquisition_price = fields.Float(
-        string='Acquisition Price',
-        required=True
-    )
-    supplier = fields.Char(
-        string='Supplier'
-    )
-    state = fields.Selection(
-        [
-            ('in_stock', 'In Stock'),
-            ('assigned', 'Assigned'),
-            ('scrapped', 'Scrapped')
-        ],
-        string='Status',
-        default='in_stock',
-        required=True
-    )
+    name = fields.Char(string='Serial Number', required=True)
+    acquisition_price = fields.Float(string='Acquisition Price', required=True)
+    supplier = fields.Char(string='Supplier')
+    state = fields.Selection([
+        ('in_stock', 'In Stock'),
+        ('assigned', 'Assigned'),
+        ('scrapped', 'Scrapped')
+    ], string='Status', default='in_stock', required=True)
     assigned_person = fields.Many2one(
         'res.partner',
         string='Assigned Person',
         domain=[('is_company', '=', False)]
     )
-    assigned_from = fields.Date(
-        string='Assigned From'
-    )
-    assigned_to = fields.Date(
-        string='Assigned To'
-    )
-    assignment_event_ids = fields.One2many(
-        'assignment.event',
-        'equipment_id',
-        string="Assignment Events",
-        readonly=True
-    )
+    assigned_from = fields.Date(string='Assigned From')
+    assigned_to = fields.Date(string='Assigned To')
+    assignment_event_ids = fields.One2many('assignment.event', 'equipment_id', string="Assignment Events", readonly=True)
 
     @api.constrains('state', 'assigned_person', 'assigned_from', 'assigned_to')
     def _check_assigned_fields(self):
@@ -103,12 +81,3 @@ class ITEquipment(models.Model):
                     'assigned_to': rec.assigned_to,
                 })
         return res
-
-    def print_report(self):
-        self.ensure_one()
-        if not self.id:
-            raise UserError("Please save the record before printing the report.")
-        # May need to add further validation for assigned from and assigned to
-        if self.state != 'assigned':
-            raise UserError("Equipment is not assigned. Cannot print assignment report.")
-        return self.env.ref('it_equipment_management.report_assignment_action').report_action(self)

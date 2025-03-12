@@ -8,7 +8,9 @@
     'data': [
         "security/ir.model.access.csv",
         'views/it_equipment_views.xml',
-        'views/report_assignment.xml'
+        'views/report_assignment.xml',
+        'report/it_equipment_templates.xml',
+        'report/it_equipment_reports.xml'
     ],
     'assets': {
         'web.assets_backend': [
